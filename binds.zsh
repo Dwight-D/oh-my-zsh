@@ -2,8 +2,13 @@ autoload -Uz insert-last-word
 zle -N insert-last-word 
 bindkey -M viins '^[lastarg' insert-last-word
 
+#Horizontal word traversal with arrow keys (escape sequence set in iterm opts)
 bindkey -M viins '^[b' vi-backward-word
 bindkey -M viins '^[f' vi-forward-word
+
+#Word deletion
+bindkey -M viins '^[dwb' backward-delete-word
+bindkey -M viins '^[dwf' delete-word
 
 #Arrow key history search
 #autoload -Uz up-line-or-beginning-search

@@ -2,6 +2,8 @@ autoload -Uz insert-last-word
 zle -N insert-last-word 
 bindkey -M viins '^[lastarg' insert-last-word
 
+bindkey -M viins '^[b' vi-backward-word
+bindkey -M viins '^[f' vi-forward-word
 
 #Arrow key history search
 #autoload -Uz up-line-or-beginning-search

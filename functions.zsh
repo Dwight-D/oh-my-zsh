@@ -28,28 +28,39 @@ notify (){
     result=$?
     #Play sound
     ping $result
-    cmd_notification "$@" $result
+    cmd_notification $result "$@"
 }
 
 #Display a notification based on command and its result (pos args)
 cmd_notification (){
-     if [[ "$#" -lt 2 ]]; then
-	echo "Usage: cmd_notification result command"
-	return
-     fi
-     result=$1
-     shift
-     cmd=$@
-     notify_text="Command completed: "
-     if [[ "$result" != 0 ]]; then
-         notify_text+="FAILURE - $result"
-     else
-         notify_text+=SUCCESS
-     fi
-     osascript -e "display notification \"$notify_text\" with title \"$cmd\""
+    if [[ "$#" -lt 2 ]]; then
+        echo "Usage: cmd_notification result command"
+        return
+    fi
+    result=$1
+    shift
+    cmd=$@
+    notify_text="Command completed: "
+    if [[ "$result" != 0 ]]; then
+        notify_text+="FAILURE - $result"
+    else
+        notify_text+=SUCCESS
+    fi
+    osascript -e "display notification \"$notify_text\" with title \"$cmd\""
 }
 
 #Read markdown in cli browser
 rmd () {
   pandoc $1 | lynx -stdin
+}
+
+function ranger-cd {
+    tempfile="$(mktemp -t tmp.XXXXXX)"
+    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+        cd "$(cat "$tempfile")"
+    fi
+    cat "$tempfile"
+    rm -f -- "$tempfile"
 }

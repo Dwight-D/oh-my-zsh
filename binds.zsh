@@ -9,6 +9,8 @@ bindkey -M viins '^[f' vi-forward-word
 #Word deletion
 bindkey -M viins '^[dwb' backward-delete-word
 bindkey -M viins '^[dwf' delete-word
+bindkey '^K' kill-line
+
 
 #Arrow key history search
 #autoload -Uz up-line-or-beginning-search

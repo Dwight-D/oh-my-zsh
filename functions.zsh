@@ -8,6 +8,24 @@ function cd() {
     builtin cd "${destination}" >/dev/null && ls
 }
 
+#Navigate upwards
+function up() {
+    counter=$1
+    if [ -z $counter ]; then
+        counter=1
+    fi
+    dest=""
+    while (( $counter > 0 )); do
+        dest=$dest"../"
+        ((counter--))
+    done;
+    cd $dest
+}
+
+function tolower() {
+    echo $@ | awk '{ print tolower($0) }'
+}
+
 function cpuu() {
     ps -A -o %cpu | awk '{s+=$1} END {print s}'
 }

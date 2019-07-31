@@ -28,6 +28,82 @@ function auth() {
     echo Authorization: Bearer $(uaa-token $user $password)
 }
 
+function varprompt(){
+    REPLY=""
+    vared -p "$1" REPLY
+}
+
+function git (){
+    local gitbin=/usr/bin/git
+    local FE_DIR=$CODE_DIR/portal-fe
+    declare -a BACKENDS=( "portal" "message-search" "account-search" "boss-be" )
+    if [ "$1" = "checkout" ]; then
+        $gitbin $@
+        case $PWD in
+            *message-search)
+            *account-search)
+            *boss-be)
+                vared -p "Also checkout front-end?" -c REPLY
+                if [[ $REPLY =~ ^[Yy] ]]; then
+                    cd $FE_DIR &>/dev/null && $gitbin $@
+                    cd - &>/dev/null
+                fi
+                ;;
+            *portal-fe)
+                vared -p "Also checkout back-end? Y/n: " -c BACKEND_CHECKOUT
+                if [[ $BACKEND_CHECKOUT =~ ^[Yy] ]]; then
+                    arraylength=${#BACKENDS[@]}
+                    for (( i=1; i<${arraylength}+1; i++ )); do
+                        echo $i. ${BACKENDS[$i]}
+                    done
+                    vared -p "Select option: " -c BACKEND_OPT
+                    backend=${BACKENDS[$BACKEND_OPT]}
+                    cd $CODE_DIR/$backend &>/dev/null && $gitbin $@
+                    cd - &>/dev/null
+                fi
+                ;;
+            *)
+                $gitbin $@
+                ;;
+        esac
+    else
+        $gitbin $@
+    fi
+}
+
+function devup (){
+    local docker_dir=~/code/portal/src/main/docker
+    local front_end_dir=~/code/portal-fe
+    if [ -z $1 ]; then
+        devup docker server
+    fi
+    while [ ! -z "$1" ]; do
+        case $1 in
+            docker)
+                cd $docker_dir &>/dev/null && docker-compose up -d gateway-app boss-be-app
+                cd - &>/dev/null
+                ;;
+            server)
+                cd $front_end_dir &>/dev/null && yarn start
+                cd - &>/dev/null
+                ;;
+            mock)
+                cd $front_end_dir &>/dev/null && yarn devMocked
+                cd - &>/dev/null
+                ;;
+            cy)
+                cd $front_end_dir &>/dev/null && yarn cy:open
+                cd - &>/dev/null
+                ;;
+            *)
+                cd $docker_dir &>/dev/null && docker-compose up -d $1
+                cd - &>/dev/null
+                ;;
+        esac
+        shift
+    done
+}
+
 function syncup () {
 
     case "$1" in

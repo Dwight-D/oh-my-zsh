@@ -36,13 +36,19 @@ function varprompt(){
 function git (){
     local gitbin=/usr/bin/git
     local FE_DIR=$CODE_DIR/portal-fe
-    declare -a BACKENDS=( "portal" "message-search" "account-search" "boss-be" )
+    declare -a BACKENDS=( "portal" "message-search" "account-search" "boss-be" "uaa" "international" )
     if [ "$1" = "checkout" ]; then
         $gitbin $@
         case $PWD in
             *message-search)
+                ;&
             *account-search)
+                ;&
             *boss-be)
+                ;&
+            *uaa)
+                ;&
+            *international)
                 vared -p "Also checkout front-end?" -c REPLY
                 if [[ $REPLY =~ ^[Yy] ]]; then
                     cd $FE_DIR &>/dev/null && $gitbin $@

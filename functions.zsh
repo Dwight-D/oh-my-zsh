@@ -8,6 +8,61 @@ function cd() {
     builtin cd "${destination}" >/dev/null && ls
 }
 
+function lastcmd(){
+    history | tail -n1 | tr -s ' ' | gcut -d ' ' --complement -f 1
+}
+
+function cc(){
+    lastcmd | pbcopy
+}
+
+function mkalias(){
+    if [ $# -lt 2 ]; then
+        echo 'Usage: mkalias alias command'
+        return 1
+    fi
+    name=$1
+    shift
+    echo "alias $name='$@'" >> $ZSH/custom/aliases.zsh
+}
+
+function tabname() {
+    echo -ne "\033]0;"$*"\007"
+}
+
+function git_repo_name() {
+    basename $(git rev-parse --show-toplevel)
+}
+
+function get_git_branch_ticket_name() {
+    git rev-parse --abbrev-ref HEAD | sed 's|.*/||'
+    #sed -E 's|.*/([a-zA-Z]*-[0-9]+).*|\1|'
+}
+
+function notes(){
+    branch=$(get_git_branch_ticket_name)
+    dirname=$NOTES_DIR/tickets/$branch
+    if [ -z $branch ]; then
+        echo "Branch name not found, something went wrong"
+        return
+    fi
+    if [ $branch = master ]; then
+        echo "You're on master..."
+        return
+    fi
+    if [ ! -d $dirname ]; then
+        mkdir -p $dirname
+    fi
+    cd $dirname
+}
+
+function cpuping () {
+    while (( $(cpuu) > 100)); do
+    sleep 10
+    done;
+    afplay /System/Library/Sounds/Ping.aiff -v 10
+}
+
 #Navigate upwards
 function up() {
     counter=$1

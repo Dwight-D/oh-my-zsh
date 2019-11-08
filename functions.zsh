@@ -1,3 +1,18 @@
+function dev() {
+    bin=$(find . -name dev.sh)
+    if [ $(echo $bin | wc -l)  -gt 1 ]; then
+        echo 'Ambiguous command, multiple dev.sh found'
+        echo "$(bin)"
+        return
+    fi
+    if [ -x "$bin" ]; then
+        cd $(dirname $bin) &>/dev/null && ./$(basename $bin) $@;
+        cd - &>/dev/null
+    else
+        echo "dev.sh not found or not executable: $bin"
+    fi
+}
+
 #cd to dir and ls contents
 function cd() {
     if [ -z "$*" ]; then
@@ -6,6 +21,10 @@ function cd() {
         destination=$*
     fi
     builtin cd "${destination}" >/dev/null && ls
+}
+
+function gmod() {
+    git st | grep modified | tr -s " " | cut -d " " -f 2 | grep -v $1
 }
 
 function lastcmd(){
@@ -108,6 +127,10 @@ notify (){
     cmd_notification $result "$@"
 }
 
+notification() {
+  osascript -e "display notification \"$2\" with title \"$1\""
+}
+
 #Display a notification based on command and its result (pos args)
 cmd_notification (){
     if [[ "$#" -lt 2 ]]; then
@@ -194,4 +217,24 @@ dr (){
             done;
             ;;
     esac
+}
+
+hack() {
+    while true; do
+        clear
+        echo Hacking $1, please wait...
+        echo -n "Progress: "
+        for i in {1..10}; do
+            echo -n .
+            sleep 1;
+        done
+    done;
+}
+
+toclip() {
+    if [ -f "$1" ]; then
+        cat $1 | pbcopy
+    else
+        echo -n "$1" | pbcopy
+    fi
 }

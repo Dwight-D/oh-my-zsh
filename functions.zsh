@@ -1,3 +1,24 @@
+#create symlink to shared dir
+function wslink() {
+    local dirn="$1"
+    local trgt="$WLSHARE/$dirn"
+    local link="$PWD/$dirn"
+    if [ -z "$1" ]; then
+	    echo Input directory name
+	    return
+    fi
+    if [ -e "$trgt" ]; then
+	    echo "Target $trgt exists, watr we doin here b???"
+	    return
+    fi
+    if [ -e "$link" ]; then
+	    echo Link $link exists, watr we doin here b???
+	    return
+    fi
+    mkdir -p $trgt
+    ln -s $trgt $link
+}
+
 #cd to dir and ls contents
 function cd() {
     if [ -z "$*" ]; then

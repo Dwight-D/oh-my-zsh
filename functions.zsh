@@ -1,3 +1,13 @@
+function ignore(){
+    if [ ! -e .git ]; then
+        echo "Not a git directory, what are you doing?"
+        return
+    fi
+    for file in "$@"; do
+        echo $file >> .gitignore
+    done
+}
+
 function dev() {
     bin=$(find . -name dev.sh)
     if [ $(echo $bin | wc -l)  -gt 1 ]; then
@@ -50,7 +60,7 @@ function tabname() {
 }
 
 function git_repo_name() {
-    basename $(git rev-parse --show-toplevel)
+    repo=$(basename $(git rev-parse --show-toplevel))
 }
 
 function get_git_branch_ticket_name() {

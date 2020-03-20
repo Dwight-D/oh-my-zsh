@@ -4,5 +4,4 @@ export EDITOR=vim
 export PATH=$PATH:$HOME/scripts
 export LESS='-SRXF'
 export LIQUIBASE_HOME=/usr/local/opt/liquibase/libexec
-export PYTHONPATH=$PYTHONPATH:/Users/maxfor/code/spectre/
 export LANG=en_US

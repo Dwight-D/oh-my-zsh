@@ -4,4 +4,5 @@ export EDITOR=vim
 export PATH=$PATH:$HOME/scripts
 export LESS='-SRXF'
 export LIQUIBASE_HOME=/usr/local/opt/liquibase/libexec
-export LANG=en_US
+export LANG="en_US.UTF-8"
+

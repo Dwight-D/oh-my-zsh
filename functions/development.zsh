@@ -29,3 +29,12 @@ function notes(){
     fi
     cd $dirname
 }
+
+function auth {
+    local token_path="$1"
+    if [ -z $token_path]; then
+        token_path=token.hex
+    fi
+    local output="Authorization: Bearer $(cat $token_path)"
+    echo $output
+}

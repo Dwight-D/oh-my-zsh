@@ -38,3 +38,8 @@ function auth {
     local output="Authorization: Bearer $(cat $token_path)"
     echo $output
 }
+
+function twrap {
+    read -d '' text
+    echo "$text" | sed -z 's|\n|\\n|g' | sed -E 's|^(.*)$|{ "text": "\1"}|'
+}

@@ -1,3 +1,41 @@
+function token_quote {
+  local quoted=()
+  for token; do
+    quoted+=( "$(printf '%q' "$token")" )
+  done
+  printf '%s\n' "${quoted[*]}"
+}
+
+function gw() {
+    cmd=$(token_quote $@)
+    cmd="_git $cmd"
+    cmd=$(gitreplace \@gh-tv4 $cmd)
+    eval $cmd
+}
+
+function gp() {
+    cmd=$(token_quote $@)
+    cmd="_git $cmd"
+    cmd=$(gitreplace \@gh-personal $cmd)
+    eval $cmd
+}
+
+function gitreplace() {
+    remote=$1
+    shift
+    args=$@
+    cmd=$(echo $cmd | sed "s/@github.com/$remote/")
+    echo $cmd
+}
+
+function _git() {
+    /usr/bin/env git $@
+}
+
+function git() {
+    gw $@
+}
+
 function dev() {
     bin=$(find . -name dev.sh)
     if [ $(echo $bin | wc -l)  -gt 1 ]; then

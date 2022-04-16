@@ -6,6 +6,12 @@ function token_quote {
   printf '%s\n' "${quoted[*]}"
 }
 
+function dvr() {
+    image=$1
+    shift
+    docker run --rm -t -i -v $PWD:$PWD -w $PWD $image $@
+}
+
 function gw() {
     cmd=$(token_quote $@)
     cmd="_git $cmd"
@@ -20,21 +26,17 @@ function gp() {
     eval $cmd
 }
 
-function gitreplace() {
-    remote=$1
-    shift
-    args=$@
-    cmd=$(echo $cmd | sed "s/@github.com/$remote/")
-    echo $cmd
-}
+#function gitreplace() {
+#    remote=$1
+#    shift
+#    args=$@
+#    cmd=$(echo $cmd | sed "s/@github.com/$remote/")
+#    echo $cmd
+#}
 
-function _git() {
-    /usr/bin/env git $@
-}
-
-function git() {
-    gw $@
-}
+#local function _git() {
+#    /usr/bin/env git $@
+#}
 
 function dev() {
     bin=$(find . -name dev.sh)

@@ -22,7 +22,7 @@ function cpuu() {
 }
 
 #Plays a sound depending on result of previous command (passed as pos arg)
-ping (){
+_ping (){
     result=$1
     #If last command was a failure, set to fail sound
     if [ "$result" != 0 ]; then
@@ -40,7 +40,7 @@ notify (){
     eval "$@"
     result=$?
     #Play sound
-    ping $result
+    _ping $result
     cmd_notification $result "$@"
 }
 

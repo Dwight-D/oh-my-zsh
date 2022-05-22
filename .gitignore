@@ -2,3 +2,4 @@ plugins
 example.zsh
 plugins/example/example.plugin.zsh
 themes/example.zsh-theme
+themes/powerlevel10k

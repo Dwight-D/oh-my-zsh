@@ -28,7 +28,7 @@ if [[ "${terminfo[kcuu1]}" != "" ]]; then
   bindkey -M viins "${terminfo[kcuu1]}" up-line-or-beginning-search
   bindkey -M vicmd "${terminfo[kcuu1]}" up-line
 fi
-# start typing + [Down-Arrow] - fuzzy find history backward
+## start typing + [Down-Arrow] - fuzzy find history backward
 if [[ "${terminfo[kcud1]}" != "" ]]; then
   autoload -U down-line-or-beginning-search
   autoload -U down-line

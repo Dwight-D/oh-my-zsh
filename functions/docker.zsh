@@ -4,7 +4,7 @@
 #| |_| | (_) | (__|   <  __/ |   
 #|____/ \___/ \___|_|\_\___|_|
 
-dr (){
+function dr() {
     case $1 in
         kill )
             vared -p "Kill all containers?" -c REPLY

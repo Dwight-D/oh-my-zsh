@@ -79,6 +79,10 @@ function auth {
     echo $output
 }
 
+function extract_token {
+    jq '.access_token' | tr -d '"'
+}
+
 function twrap {
     read -d '' text
     echo "$text" | sed -z 's|\n|\\n|g' | sed -E 's|^(.*)$|{ "text": "\1"}|'

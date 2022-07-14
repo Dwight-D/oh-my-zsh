@@ -7,3 +7,7 @@ binlink() {
     fi
     ln -sv $full_path $HOME/bin/
 }
+
+soundup() {
+    systemctl --user restart wireplumber pipewire pipewire-pulse
+}
